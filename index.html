@@ -1,20 +1,27 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Template</title>
-    <script src="index.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="index.css">
-  </head>
+<html>
+<head>
+<title>Geography Nerd Login</title>
+<!-- Include CSS File Here -->
+<link rel="stylesheet" href="css/style.css"/>
+<!-- Include JS File Here -->
+<script src="js/login.js"></script>
+</head>
+<body>
+<div class="container">
+<div class="main">
+<h2>Geography Nerd Login </h2>
+<form id="form_id" method="post" name="myform">
+<label>User Name :</label>
+<input type="text" name="username" id="username"/>
+<label>Password :</label>
+<input type="password" name="password" id="password"/>
+<input type="button" value="Login" id="submit" onclick="validate"/>
+<br/>
+<span>Note : </b>For this demo use following username and password. <br/><b class="valid">User Name : evilgeniusnyc <br/>Password : monkey123</b></span>
+</div>
+<button onclick="myFunction()"> Login Succsesful! <br/>Please click here for redirect.</button">
+ 
 
-  <body>
-
-    <h1>Template</h1>
-    <!-- Feel free to alter the HTML so that it contains just the skeleton of your application -->
-    <div id="main-div">
-
-    </div>
-
-
-  </body>
+</div>
+</body>
 </html>
