@@ -1,34 +1,11 @@
-// // long in form 
-// const attempt = 3; // Variable to count number of attempts.
-// // Below function Executes on click of login button.
-// function validate(){
-// var username = document.getElementById("username").value;
-// var password = document.getElementById("password").value;
-// if ( username == "Formget" && password == "formget#123"){
-// alert ("Welcome to Geography Nerd!");
-// window.location = "success.html"; // Redirecting to other page.
-// return false;
-// }
-// else{
-// attempt --;// Decrementing by one.
-// alert("You have left "+attempt+" attempt;");
-// // Disabling fields after 3 attempts.
-// if( attempt == 0){
-// document.getElementById("username").disabled = true;
-// document.getElementById("password").disabled = true;
-// document.getElementById("submit").disabled = true;
-// return false;
-// }
-// }
-// }
-
 
 const regionsURL = 'http://localhost:3000/regions'
 const regionList = document.getElementById("list")
 const showPanel = document.getElementById("show-panel")
-const countryURL = ('http://localhost:3000/countries')
-const funFactURL = ('http://localhost:3000/fun_facts')
+const selectId = document.getElementById("countries")
+const formFunFact = document.getElementById("form-funfact")
 
+// console.log(formFunFact)
 // console.log(regionList)
 
 fetch(`http://localhost:3000/regions`) 
@@ -48,65 +25,80 @@ const showRegion = (region) => {
         regionLi.addEventListener('click',(event) => {
             //console.log("hello")  -> clicking on region name shows countries array
         //console.log(region.countries)
+        selectId.innerHTML = " "
             region.countries.forEach(country => {
                 displayCountry(country, regionLi)
                 //console.log(regionLi)
-
+                makeOption(country)
             })
         })
+}  
+// end of show region function 
+        // Options for form
+const makeOption = (country) => {
+  let countryElement = document.createElement("option")
+  countryElement.innerText = country.name
+  countryElement.value = country.id
+  selectId.append(countryElement)
+}
 
-}  // end of show region function 
-
-// create a function to display countries 
+//  function to display countries below
 
 let displayCountry = (country, regionLi) => {
-console.log(country)
-    let countryLi = document.createElement("li")
-    countryLi.innerText = country.name
-    let img = document.createElement("img")
-    img.src = country.flag
-    regionLi.append(countryLi, img)
+  // console.log(country.fun_facts)
+      let countryLi = document.createElement("li")
+      countryLi.innerText = country.name
+      let img = document.createElement("img")
+      img.src = country.flag
+      // let funFactDiv = document.createElement("div")
+      country.fun_facts.forEach(fun_fact => {    // THIS LINE IS CAUSING ALL THE PROBLEMS!
+        let funFactDiv = document.createElement("div")
+        funFactDiv.innerText = fun_fact.first
+        countryLi.append(funFactDiv)
+          createFunFact(funFactDiv)   // SHOULDN'T CALL THE FUNCTION HERE!!
+        })
+        regionLi.append(countryLi, img)   
+  }
 
-}
-
-// need to create function to create fun_facts through Patch
-
-
-function fetchCountry(){
-    return fetch(countryURL)
-    .then(response => response.json())
-}
-
-document.addEventListener('DOMcontentLoaded', () => {
-fetchCountries()
-.then(results => console.log(results))
-
-})
-// should include fun facts based on countries controller
-        // def index 
-        // countries = Countries.all
-        //render json: ... , include: :fun_facts
-        //end
-
-function addANewFunFact(event) {
-    const countryId = event.target.dataset.countryId
-    data = { country_id: countryId}
-  
-    fetch(funFactURL, {
-      method: 'POST',
-      headers:  {
-        "Content-Type": "full_stack/json",
-        "Accept": "full_stack/json"
-        // is the above syntax right?
-      },
-      body: JSON.stringify(data)
-        .then(response => response.json())
-        .then(result => console.log(result))
+  let createFunFact = (funFactDiv) => {
+    formFunFact.addEventListener('submit', (event) => {
+    event.preventDefault()
+    let firstFunFact = event.target[0].value
+    let countryId = event.target[1].value 
+      fetch("http://localhost:3000/fun_facts", {
+        method: "POST", 
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          first: firstFunFact, 
+          second: "", 
+          third: "", 
+          country_id: countryId
+        })
+      })
+      .then(resp => 
+        resp.json())
+      .then(funFact => {
+        funFactDiv.innerText = funFact.first
+console.log(funFact)
+      })
+  // console.log("hello!")
     })
-  };
-// let displayFact = (funFact, countryLi) => {
-//     console.log(funFact)
-//     let funFactLi = documentElement("li")
-//     funFactLi.innerText = funFact.first
-//     countryLi.append(funFactLi)
-// }
+
+  }
+
+  
+
+
+ 
+
+
+
+//     const submitval = $(this).val()
+//     alert (submitval)
+  // event.target.countries.value
+  // let funFactContent = inputField.value }
+
+  // let form = document.getElementById("form-for") 
+  // submitForm = selectId.add 
